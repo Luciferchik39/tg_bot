@@ -17,6 +17,8 @@ from environs import Env
 env = Env()
 env.read_env()
 
+TOKEN_BOT = env.str('TOKEN_BOT')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tg_bot.apps.bot.management',
+    'tg_bot.apps.bot',
 ]
 
 MIDDLEWARE = [

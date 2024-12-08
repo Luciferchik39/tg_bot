@@ -17,7 +17,7 @@ class BotUser(models.Model):
 class work_stats(models.Model):
     full_name = models.CharField(('Полное имя'), max_length=250, blank=True, null=False)
     id_ticket = models.CharField(('ID Переоформленного тикета'), max_length=250, blank=True, null=True)
-    data_add = models.DateField(('Дата добавления тикета'))
+    time_of_addition = models.DateField(('Дата добавления тикета'))
     count_ticket = models.IntegerField(('Колличество'), null=False,)
 
     class Meta:

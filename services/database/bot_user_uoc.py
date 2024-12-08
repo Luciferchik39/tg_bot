@@ -14,8 +14,8 @@ def update_or_create_tg_user(object_user):
 
     telegram_user, create_status = BotUser.objects.update_or_create(telegram_id=telegram_id, full_name= full_name, username=username)
     if create_status is False:
-        logger.info(f'Успешно обновлён user в БД {full_name} {username} {object_user.id}')
+        logger.info(f'Успешно обновлён user в БД {full_name} {username}')
 
     else:
-        logger.info(f'Успешно создан user в БД {full_name} {username} {object_user.id}')
+        logger.info(f'Успешно создан user в БД {full_name} {username}')
     return create_status

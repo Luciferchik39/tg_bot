@@ -19,3 +19,5 @@ class Command(BaseCommand):
             asyncio.run(bot.infinity_polling(logger_level=settings.LOG))
         except Exception as err:
             logger.error(f'Ошибка: {err}')
+
+

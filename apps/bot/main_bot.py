@@ -6,7 +6,7 @@ from telebot import types
 from tg_bot.services.database.bot_user_uoc import update_or_create_tg_user, \
     user_find
 from tg_bot.services.database.create_and_add_ticket import \
-    create_and_add_ticket, add_ticket_pass_ticket
+    create_and_add_ticket, add_ticket_pass_ticket, show_ticket
 
 bot = AsyncTeleBot(settings.TOKEN_BOT, parse_mode='HTML')
 
@@ -99,6 +99,31 @@ async def add_ticket(message):
         await bot.send_message(message.chat.id, message.json['text'])
 
 # Handle all other messages with content_type 'text' (content_types defaults to ['text'])
+
+
+
+def count_tick(message):
+    return 'Получить колличество решённых тикетов за сегодня' in message.text
+
+@bot.message_handler(func=count_tick)
+async def show_count_tick(message):
+#     нужно сделать запрос в базу данных work_stats с 2 параметрами сегоднешней
+#     датой и user_pk_id
+    try:
+        user_pk = await user_find(message.json['from']['id'])
+    except Exception as err:
+        logger.info(f'проблемы при поиске юзера в БД для показания статы {err}')
+        await bot.send_message(message.chat.id, message.json['text'])
+    object_ticket = {'user_pk': user_pk}
+    try:
+        b = await show_ticket(object_ticket)
+        if b:
+            await bot.send_message(message.chat.id, text=f'Сейчас у тебя {b} решённых тикетов')
+    except Exception as err:
+        logger.info(f'проблемы с выводом чила тикетов {err}')
+        await bot.send_message(message.chat.id, message.json['text'])
+
+
 @bot.message_handler(func=lambda message: True)
 async def echo_message(message):
     await bot.reply_to(message, message.text)

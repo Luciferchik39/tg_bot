@@ -34,3 +34,16 @@ def add_ticket_pass_ticket(message):
     else:
         logger.info(f'Успешно создан ticket в БД')
     return ticket
+
+
+@sync_to_async
+def show_ticket(message):
+    user_pk = message['user_pk']
+    current_date_time = datetime.datetime.now()
+    count = work_stats.objects.filter(time_of_addition=current_date_time, user_pk_id=user_pk).count()
+
+    if count is False:
+        logger.info(f'0 тикетов по заданным параметрам')
+    else:
+        logger.info(f'тикеты успешно посчитаны')
+    return count

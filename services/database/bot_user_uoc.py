@@ -19,3 +19,15 @@ def update_or_create_tg_user(object_user):
     else:
         logger.info(f'Успешно создан user в БД {full_name} {username}')
     return create_status
+
+
+@sync_to_async
+def user_find(user):
+    try:
+        user = BotUser.objects.get(telegram_id=user)
+        user_id = user.id
+    except BotUser.DoesNotExist:
+        print("Объект не найден")
+    except BotUser.MultipleObjectsReturned:
+        print("Найдено несколько объектов, что недопустимо")
+    return user_id

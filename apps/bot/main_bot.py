@@ -3,7 +3,8 @@ import logging
 from telebot.async_telebot import AsyncTeleBot
 from django.conf import settings
 from telebot import types
-from tg_bot.services.database.bot_user_uoc import update_or_create_tg_user
+from tg_bot.services.database.bot_user_uoc import update_or_create_tg_user, \
+    user_find
 from tg_bot.services.database.create_and_add_ticket import \
     create_and_add_ticket, add_ticket_pass_ticket
 
@@ -49,12 +50,18 @@ def work(message):
 
 @bot.message_handler(func= work)
 async def start(message):
+    try:
+        user_pk = await user_find(message.json['from']['id'])
+    except Exception as err:
+        logger.info(f'проблемы при поиске юзера в БД {err}')
+        await bot.send_message(message.chat.id, message.json['text'])
     first_name = message.json['from']['first_name']
     last_name = message.json['from']['last_name']
     full_name = f'{first_name} {last_name}'
     id_ticket = message.json['text']
-    object_ticket = {'id_ticket':id_ticket,
+    object_ticket = {'id_ticket': id_ticket,
                    'full_name': full_name,
+                     'user_pk': user_pk
                      }
     try:
         b = await create_and_add_ticket(object_ticket)

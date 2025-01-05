@@ -77,12 +77,18 @@ def add_tick(message):
     return '+1 решённый тикет в копилку' in message.text
 @bot.message_handler(func=add_tick)
 async def add_ticket(message):
+    try:
+        user_pk = await user_find(message.json['from']['id'])
+    except Exception as err:
+        logger.info(f'проблемы при поиске юзера в БД {err}')
+        await bot.send_message(message.chat.id, message.json['text'])
     first_name = message.json['from']['first_name']
     last_name = message.json['from']['last_name']
     full_name = f'{first_name} {last_name}'
     id_ticket = 'Pass'
     object_ticket = {'id_ticket': id_ticket,
                      'full_name': full_name,
+                     'user_pk': user_pk
                      }
     try:
         b = await add_ticket_pass_ticket(object_ticket)

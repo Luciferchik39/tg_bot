@@ -15,6 +15,7 @@ class BotUser(models.Model):
 
 
 class work_stats(models.Model):
+    user_pk = models.ForeignKey('BotUser', on_delete=models.CASCADE, null=True)
     full_name = models.CharField(('Полное имя'), max_length=250, blank=True, null=False)
     id_ticket = models.CharField(('ID Переоформленного тикета'), max_length=250, blank=True, null=True)
     time_of_addition = models.DateField(('Дата добавления тикета'))

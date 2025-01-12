@@ -2,11 +2,9 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-<<<<<<< HEAD
 
-=======
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
->>>>>>> ab9d7b0 (меняю расположение manage.py вроде всё работает :))
+
 
 def main():
     """Run administrative tasks."""

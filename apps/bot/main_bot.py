@@ -118,7 +118,10 @@ async def show_count_tick(message):
     try:
         b = await show_ticket(object_ticket)
         if b:
-            await bot.send_message(message.chat.id, text=f'Сейчас у тебя {b} решённых тикетов')
+            await bot.send_message(message.chat.id, text=f'Колличество решённых тикетов = {b} ')
+        else:
+            await bot.send_message(message.chat.id,
+                                   text=f'Колличество решённых тикетов = {b} ')
     except Exception as err:
         logger.info(f'проблемы с выводом чила тикетов {err}')
         await bot.send_message(message.chat.id, message.json['text'])
